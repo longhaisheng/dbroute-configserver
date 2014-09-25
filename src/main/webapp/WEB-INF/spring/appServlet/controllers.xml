@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<mvc:view-controller path="/" view-name="redirect:/zklist" />
+	<context:component-scan base-package="com.dbroute.mvc" />
+	
+	<!-- 此bean应和 php app应用跑在同一物理机或同一虚拟机上  php端生成config.php的文件类 -->
+	<bean class="com.dbroute.bean.zk.ZKManager"
+		init-method="init" destroy-method="close">
+		<property name="phpClientWatcher" value="true"></property>
+		<property name="phpClient">
+			<list>
+				<value>mmall@@@single_db_pay_info_config</value><!-- @@@前为应用名,后为 数据库在php配置文件中的变量名 -->
+				<!--value>orderService@@@db_order_info_config</value-->
+			</list>
+		</property>
+		<property name="generatePath">
+			<map>
+				<entry key="mmall" value="F:\\gen\\db_config.php"></entry><!--key为php app应用的文件夹名称,value为生成的文件具体路径名称 -->
+				<!--entry key="orderService" value="/app/orderService/includes/db_config.php"></entry-->
+			</map>
+		</property>
+	</bean>
+	
+	<!--bean class="com.dbroute.bean.zk.MonitorAllDatabases" init-method="watcherAll" destroy-method="close"></bean--><!-- 监控数据库是否宕机 -->
+	
+</beans>
