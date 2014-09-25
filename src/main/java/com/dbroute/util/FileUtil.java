@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
@@ -75,7 +78,7 @@ public class FileUtil {
 
 		StringBuilder stringBuilder = new StringBuilder();
 		Map<String, String> masterMap = new HashMap<String, String>();
-		Map<String, String> slaveMap = new LinkedHashMap<String, String>();
+		Map<String, String> slaveMap = new HashMap<String, String>();
 
 		if (!list.isEmpty()) {
 			for (String str : list) {
@@ -99,6 +102,27 @@ public class FileUtil {
 					}
 				}
 			}
+
+			if (!masterMap.isEmpty()) {
+				List<Map.Entry<String, String>> masterMapList = new ArrayList<Map.Entry<String, String>>(masterMap.entrySet());
+				Collections.sort(masterMapList, new Comparator<Map.Entry<String, String>>() {
+					@Override
+					public int compare(Entry<String, String> o1, Entry<String, String> o2) {
+						return (o1.getKey()).toString().compareTo(o2.getKey());
+					}
+				});
+			}
+			
+			if (!slaveMap.isEmpty()) {
+				List<Map.Entry<String, String>> slaveMapList = new ArrayList<Map.Entry<String, String>>(slaveMap.entrySet());
+				Collections.sort(slaveMapList, new Comparator<Map.Entry<String, String>>() {
+					@Override
+					public int compare(Entry<String, String> o1, Entry<String, String> o2) {
+						return (o1.getKey()).toString().compareTo(o2.getKey());
+					}
+				});
+			}
+
 		}
 		if (bytes != null) {
 			stringBuilder.append(new String(bytes));
