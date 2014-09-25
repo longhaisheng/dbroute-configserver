@@ -34,7 +34,7 @@ public class FileUtil {
 			mkDir(file);
 			File config_file = new File(file_path);
 			if (config_file.exists()) {
-				SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+				SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 				String file_name = df.format(new Date());
 				String bat_file_name = folder_path + File.separator + file_name + ".php";
 				config_file.renameTo(new File(bat_file_name));
