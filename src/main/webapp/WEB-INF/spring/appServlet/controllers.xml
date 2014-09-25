@@ -27,6 +27,6 @@
 		</property>
 	</bean>
 	
-	<bean class="com.dbroute.bean.zk.MonitorAllDatabases" init-method="watcherAll" destroy-method="close"></bean><!-- 监控数据库是否宕机 -->
+	<!--bean class="com.dbroute.bean.zk.MonitorAllDatabases" init-method="watcherAll" destroy-method="close"></bean--><!-- 监控数据库是否宕机 -->
 	
 </beans>

@@ -31,12 +31,12 @@ public class ZkController {
 
 	private Logger log = Logger.getLogger(ZkController.class);
 
-	private ZKManager zk = new ZKManager();
+	private ZKManager zkManager = new ZKManager();
 
 	@ModelAttribute
 	public void initZK() {
 		try {
-			zk.createZooKeeper();
+			zkManager.createZooKeeper();
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -51,10 +51,10 @@ public class ZkController {
 		// appNames.add("payInfo");
 
 		try {
-			String rootPath = zk.getZkRootPath();
+			String rootPath = zkManager.getZkRootPath();
 			log.info(" ZkController : " + rootPath);
 
-			List<String> list = zk.getZookeeper().getChildren(rootPath, false);
+			List<String> list = zkManager.getZookeeper().getChildren(rootPath, false);
 			for (String str : list) {
 				if (str.indexOf(FileUtil.SPLIT_STR) > 0) {
 					String[] strArray = str.split(FileUtil.SPLIT_STR);
@@ -78,8 +78,8 @@ public class ZkController {
 		Set<String> set = new HashSet<String>();
 		List<DbConfigVariableDO> dbConfigList = new ArrayList<DbConfigVariableDO>();
 		try {
-			String rootPath = zk.getZkRootPath();
-			List<String> list = zk.getZookeeper().getChildren(rootPath, false);
+			String rootPath = zkManager.getZkRootPath();
+			List<String> list = zkManager.getZookeeper().getChildren(rootPath, false);
 			if (!list.isEmpty()) {
 				for (String str : list) {
 					List<String> masterDbs = new ArrayList<String>();
@@ -92,7 +92,7 @@ public class ZkController {
 						String dbConfigName = strArray[1];
 						set.add(appName);
 
-						List<String> newList = zk.getZookeeper().getChildren(rootPath + "/" + str, false);
+						List<String> newList = zkManager.getZookeeper().getChildren(rootPath + "/" + str, false);
 						if (!newList.isEmpty()) {
 							for (String newStr : newList) {
 								if (newStr.startsWith("master@@@")) {
@@ -104,8 +104,8 @@ public class ZkController {
 							}
 						}
 
-						if (zk.getZookeeper().exists(rootPath + "/" + str + "/" + "base_config", false) != null) {
-							byte[] base_config_bytes = zk.getZookeeper().getData(rootPath + "/" + str + "/" + "base_config", false, null);
+						if (zkManager.getZookeeper().exists(rootPath + "/" + str + "/" + "base_config", false) != null) {
+							byte[] base_config_bytes = zkManager.getZookeeper().getData(rootPath + "/" + str + "/" + "base_config", false, null);
 							if (base_config_bytes != null) {
 								String base_config_str = new String(base_config_bytes);
 								dbConfigVariable.setBaseConfig(base_config_str);
@@ -243,11 +243,11 @@ public class ZkController {
 			}
 		}
 
-		String rootPath = zk.getZkRootPath();
+		String rootPath = zkManager.getZkRootPath();
 		String base_config_path = rootPath + "/" + app_name + FileUtil.SPLIT_STR + db_config_name + "/" + "base_config";
 		try {
-			if (zk.getZookeeper().exists(base_config_path, false) != null) {
-				zk.getZookeeper().setData(base_config_path, base_config.getBytes(), -1);
+			if (zkManager.getZookeeper().exists(base_config_path, false) != null) {
+				zkManager.getZookeeper().setData(base_config_path, base_config.getBytes(), -1);
 				model.addAttribute("success", "update success! ");
 			}
 		} catch (KeeperException e) {

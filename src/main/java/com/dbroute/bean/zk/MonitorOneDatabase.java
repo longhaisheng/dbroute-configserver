@@ -198,11 +198,13 @@ public class MonitorOneDatabase {
 			try {
 				if (this.dbZkNode.isDbIsDoubleMaster()) {// 双master can delete
 					if (master_db_path != null && master_db_path != "" && zk.exists(master_db_path, false) != null) {
+						//TODO 发送邮件及短信通知
 						zk.delete(master_db_path, -1);
 						log.info(" delete success for master_db_path " + master_db_path);
 					}
 				}
 				if (slave_db_path != null && slave_db_path != "" && zk.exists(slave_db_path, false) != null) {
+					//TODO 发送邮件及短信通知
 					zk.delete(slave_db_path, -1);
 					log.info(" delete success for slave_db_path " + slave_db_path);
 				}
