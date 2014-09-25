@@ -3,7 +3,7 @@ dbroute-configserver
 
 dbroute动态配置管理
 
-1、实现 php dbroute 框架配置项的动态管理,动态生成 php的config.php.<br>
+1、实现 php dbroute 框架配置项的动态管理,动态生成 php的config.php,并备份老的配置文件.<br>
 2、动态实现加减 mysql slave数据库.<br>
 3、动态加减mysql 双master数据库.<br>
 4、实时监控mysql数据库是否宕机.<br>
